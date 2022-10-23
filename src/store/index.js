@@ -31,13 +31,23 @@ const store = createStore({
       state.city[payload.index]["weather"] = payload.weather;
     },
     addCity(state, payload) {
-      state.city.push({
-        lon: payload.lon,
-        lat: payload.lat,
-        name: payload.name,
-        weather: payload.weather,
-        showWeather: false,
-      });
+      if (payload.index == -1) {
+        state.city.push({
+          lon: payload.lon,
+          lat: payload.lat,
+          name: payload.name,
+          weather: payload.weather,
+          showWeather: false,
+        });
+      } else {
+        state.city[payload.index] = {
+          lon: payload.lon,
+          lat: payload.lat,
+          name: payload.name,
+          weather: payload.weather,
+          showWeather: false,
+        };
+      }
     },
     deleteCity(state, index) {
       state.city.splice(index, 1);
@@ -107,6 +117,7 @@ const store = createStore({
         });
 
       context.commit("addCity", {
+        index: payload.index,
         lon: payload.lon,
         lat: payload.lat,
         name: cityName,

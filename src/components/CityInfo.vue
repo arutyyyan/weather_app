@@ -10,15 +10,22 @@
             change(index, city.showWeather)
         "
       >
-        {{ city.name }}
+        {{ city.name }} {{ city.lon }} {{ city.lat }}
         <div v-if="city.showWeather" class="weather">
-          <div>Longitude: {{ city.lon }}</div>
-          <div>Latitude: {{ city.lat }}</div>
           <div v-for="(key, value, ind) in city.weather" :key="ind">
             {{ value }}: {{ key }}
           </div>
         </div>
-        <i @click="deleteCity(index)" class="fa-solid fa-xmark icon-3x"></i>
+        <i
+          @click="editCity(index)"
+          id="edit"
+          class="fa-regular fa-pen-to-square"
+        ></i>
+        <i
+          @click="deleteCity(index)"
+          id="delete"
+          class="fa-solid fa-xmark fa-lg"
+        ></i>
       </div>
     </div>
   </div>
@@ -51,6 +58,9 @@ export default {
       };
       this.changeVisibility(payload);
     },
+    editCity(index) {
+      this.emitter.emit("edit-city", index);
+    },
   },
 };
 </script>
@@ -70,12 +80,19 @@ export default {
   cursor: pointer;
   position: relative;
 }
-i {
+#delete {
   position: absolute;
-  top: 10px;
+  top: 17px;
   right: 10px;
   cursor: pointer;
-  color: white;
+  color: rgb(92, 92, 92);
+}
+#edit {
+  position: absolute;
+  top: 8.5px;
+  right: 32px;
+  cursor: pointer;
+  color: rgb(92, 92, 92);
 }
 .weather {
   color: rgb(92, 92, 92);

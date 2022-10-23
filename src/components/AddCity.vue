@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "AddCity",
@@ -19,28 +19,33 @@ export default {
     return {
       lat: "",
       lon: "",
+      index: -1,
     };
   },
+  computed: mapGetters(["allCities"]),
   methods: {
     ...mapActions(["findCity"]),
     addCity() {
       const payload = {
         lon: this.lon,
         lat: this.lat,
+        index: this.index,
       };
+      this.index = -1;
       this.findCity(payload);
     },
+  },
+  mounted() {
+    this.emitter.on("edit-city", (index) => {
+      this.lon = this.allCities[index].lon;
+      this.lat = this.allCities[index].lat;
+      this.index = index;
+    });
   },
 };
 </script>
 
 <style scoped>
-/* button {
-  background: linear-gradient(274.42deg, #92a3fd 0%, #9dceff 124.45%);
-  box-shadow: 0px 10px 22px rgba(149, 173, 254, 0.3);
-  border-radius: 5px;
-  padding: 20px;
-} */
 form {
   display: flex;
   margin: 20px 0px;
